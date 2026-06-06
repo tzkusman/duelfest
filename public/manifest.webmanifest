@@ -1,0 +1,38 @@
+{
+  "name": "DuelFit",
+  "short_name": "DuelFit",
+  "description": "Create 1v1 fitness duels, share a link, and whoever finishes first with video proof wins the pot.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#131313",
+  "theme_color": "#131313",
+  "categories": ["fitness", "health", "lifestyle", "social"],
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Create Duel",
+      "url": "/create",
+      "description": "Start a new 1v1 challenge"
+    },
+    {
+      "name": "Arena",
+      "url": "/arena",
+      "description": "Browse open duels"
+    }
+  ]
+}

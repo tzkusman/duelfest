@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body {
+    background: #131313;
+    color: #e5e2e1;
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: #d2f000;
+    color: #2c3400;
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #353534;
+    border-radius: 10px;
+  }
+}
+
+@layer components {
+  .glass-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08);
+  }
+
+  .glow-lime {
+    box-shadow: 0 0 20px rgba(210, 240, 0, 0.3);
+  }
+
+  .glow-purple {
+    box-shadow: 0 0 20px rgba(182, 0, 248, 0.3);
+  }
+
+  .glow-gold {
+    box-shadow: 0 0 40px rgba(233, 196, 0, 0.2);
+  }
+
+  .text-glow-lime {
+    text-shadow: 0 0 30px rgba(210, 240, 0, 0.6);
+  }
+
+  .text-glow-gold {
+    text-shadow: 0 0 8px rgba(233, 196, 0, 0.5);
+  }
+
+  .progress-shimmer {
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.4) 50%,
+      transparent 100%
+    );
+  }
+}
