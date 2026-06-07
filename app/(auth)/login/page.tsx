@@ -22,20 +22,67 @@ export default function LoginPage() {
     setStatus('sending');
     setErrorMsg(null);
 
-    const { error } = await supabase.auth.signInWithOtp({
-      email: email.trim(),
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
-      },
-    });
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim() }),
+      });
 
-    if (error) {
-      setErrorMsg(error.message);
+      const data = await res.json();
+      console.log('POST /api/auth/login response:', data);
+
+      if (data.error) {
+        setErrorMsg(data.error);
+        setStatus('error');
+        return;
+      }
+
+      if (data.access_token) {
+        try {
+          const { error: setError } = await supabase.auth.setSession({
+            access_token: data.access_token,
+            refresh_token: data.refresh_token,
+          });
+          if (setError) {
+            console.error('setSession error:', setError);
+            setErrorMsg(setError.message);
+            setStatus('error');
+            return;
+          }
+        } catch (err) {
+          console.error('setSession exception:', err);
+          setErrorMsg('Failed to set session');
+          setStatus('error');
+          return;
+        }
+
+        router.push(next);
+        router.refresh();
+        return;
+      }
+
+      if (data.needsRegistration) {
+        const { error } = await supabase.auth.signInWithOtp({
+          email: email.trim(),
+          options: {
+            emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
+          },
+        });
+
+        if (error) {
+          console.error('signInWithOtp error:', error);
+          setErrorMsg(error.message);
+          setStatus('error');
+          return;
+        }
+
+        setStatus('sent');
+      }
+    } catch {
+      setErrorMsg('Something went wrong. Please try again.');
       setStatus('error');
-      return;
     }
-
-    setStatus('sent');
   };
 
   return (
@@ -54,7 +101,7 @@ export default function LoginPage() {
             Sign in
           </h1>
           <p className="mb-6 text-body-md text-on-surface-variant">
-            We'll send you a magic link. No passwords.
+            Enter your email to get started. No passwords.
           </p>
 
           {status === 'sent' ? (
@@ -111,7 +158,7 @@ export default function LoginPage() {
                 disabled={status === 'sending' || !email}
                 className="w-full rounded-lg bg-primary-container py-4 font-headline-md text-on-primary-container transition active:scale-95 disabled:opacity-50 glow-lime"
               >
-                {status === 'sending' ? 'Sending…' : 'Send magic link'}
+                {status === 'sending' ? 'Checking…' : 'Continue with email'}
               </button>
 
               <p className="text-center text-xs text-on-surface-variant">

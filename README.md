@@ -99,6 +99,16 @@ Get-Process -Name "node" | Stop-Process -Force
 
 ---
 
+### 🔧 Today's local fixes (2026-06-07)
+
+- **TypeScript fixes:** resolved implicit-`any` errors in `lib/supabase/middleware.ts` and `lib/supabase/server.ts` so `npm run typecheck` passes.
+- **Improved auth debugging:** added logging to the auth callback and login flow to surface failures during the magic-link exchange:
+  - `app/auth/callback/route.ts` — server-side exchange error logging
+  - `app/(auth)/login/page.tsx` — client console logs around `/api/auth/login` and `supabase.auth.setSession`
+- **Service worker in dev:** disabled automatic service-worker registration in dev to avoid stale cached bundles causing an older build to run in other browsers (`app/layout.tsx` now registers the worker only when `NODE_ENV === 'production'`). If you previously had a service worker registered, open DevTools → Application → Service Workers and unregister it, or test in an Incognito window.
+- **Dev server restarted:** the dev server was restarted during debugging (it may run on a different port if 3000 is in use — check the terminal for the current URL).
+
+
 ### 🌐 Environment Variables
 
 All variables live in `.env.local` (gitignored). See `.env.local.example` for the full template.

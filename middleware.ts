@@ -5,6 +5,7 @@ const PUBLIC_PATHS = [
   '/',
   '/login',
   '/auth/callback',
+  '/api/auth/login',
   '/d', // share-link landing
   '/manifest.webmanifest',
   '/sw.js',

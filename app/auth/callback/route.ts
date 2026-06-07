@@ -12,6 +12,9 @@ export async function GET(request: NextRequest) {
     if (!error) {
       return NextResponse.redirect(`${origin}${next}`);
     }
+
+    // Log exchange errors to help debugging (e.g., cookie issues)
+    console.error('exchangeCodeForSession error:', error);
   }
 
   return NextResponse.redirect(`${origin}/login?error=auth-callback-failed`);
